@@ -13,3 +13,17 @@
   (cond
     [(equal? 0 w) 1]
     [else  (* x (pow x (- w 1)) )] ))
+
+
+;Ejercicio Average
+
+(define (average list)
+  (cond
+    [(null? list) 0]
+    [(equal? (length list) 1) (car list)]
+    [else (+ (car list) (avaux (cdr list))) ]))
+
+(define (avaux list)
+  (cond 
+    [(null? list) 0]
+    (+ (car list) (avaux (cdr list))) ))
