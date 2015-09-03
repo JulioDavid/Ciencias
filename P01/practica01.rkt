@@ -14,10 +14,10 @@
     [else  (* x (pow x (- w 1)) )] ))
 ;pruebas
 
-(test (pow 3 0) 1)
-(test (pow 0 0) 1)
-(test (pow 0 4) 0)
-(test (pow 2 3) 8)
+;(test (pow 3 0) 1)
+;(test (pow 0 0) 1)
+;(test (pow 0 4) 0)
+;(test (pow 2 3) 8)
 
 
 
@@ -36,11 +36,25 @@
     ;adds the elements from the list: first element + avaux(the rest of the list).
     [else(+ (car list) (avaux (cdr list)))] ))
 ;Pruebas
-(test (average '(0)) 0)
-(test (average '()) 0)
-(test (average '(5)) 5)
-(test (average '(10 3 17)) 10)
+;(test (average '(0)) 0)
+;(test (average '()) 0)
+;(test (average '(5)) 5)
+;(test (average '(10 3 17)) 10)
 
+
+
+
+;Función primes
+;(define (primes n)
+;  (cond
+;    [(equal? 1 n) '()]
+ ;   [(equal? 2 n) '(2)]
+  ;  [else (
+            
+            
+   ;         (test (primes 30) '(2 3 5 7 11 13 17 19 23 29))
+;(test (primes 11) '(2 3 5 7 11))
+;(test (primes 1) '())
 
 
 
@@ -51,12 +65,12 @@
     [(empty? list2) '()]
     [else (cons (cons (car list1) (cons (car list2) empty)) (zip (cdr list1) (cdr list2)))] ))
 
-(test (zip '() '()) '())
-(test (zip '(2 4) '()) '())
-(test (zip '() '(4 2)) '())
-(test (zip '(4) '(3)) '((4 3)))
-(test (zip '(1 3 5) '(2 4 6)) '((1 2) (3 4) (5 6)))
-(test (zip '(1 3 5) '(2 4)) '((1 2) (3 4)))
+;(test (zip '() '()) '())
+;(test (zip '(2 4) '()) '())
+;(test (zip '() '(4 2)) '())
+;(test (zip '(4) '(3)) '((4 3)))
+;(test (zip '(1 3 5) '(2 4 6)) '((1 2) (3 4) (5 6)))
+;(test (zip '(1 3 5) '(2 4)) '((1 2) (3 4)))
 
 
 
@@ -84,11 +98,11 @@
     [(equal? (pred?(car list1)) #t)#t]
     [else (any? pred?(cdr list1))])}
 
-(test (any? symbol? '(1 2 3)) #f)
-(test (any? boolean? '(a b #t)))
-(test (any? number? '()) #f)
-(test (any? symbol? '(1 a 3)) #t)
-(test (any? number? '(a b c 1 e)) #t)
+;(test (any? symbol? '(1 2 3)) #f)
+;(test (any? boolean? '(a b #t)) #t)
+;(test (any? number? '()) #f)
+;(test (any? symbol? '(1 a 3)) #t)
+;(test (any? number? '(a b c 1 e)) #t)
 
 
 
@@ -100,9 +114,23 @@
     [(equal? (pred?(car list1)) #f)#f]
     [else (every? pred?(cdr list1))])}
 
-(test (every? symbol? '()) #t)
-(test (every? boolean? '(a b #t))#f)
-(test (every? number? '(1 2 a)) #f)
-(test (every? symbol? '(a b c d e)) #t)
-(test (every? number? '(a b c 1 e)) #f)
-   
+;(test (every? symbol? '()) #t)
+;(test (every? boolean? '(a b #t))#f)
+;(test (every? number? '(1 2 a)) #f)
+;(test (every? symbol? '(a b c d e)) #t)
+;(test (every? number? '(a b c 1 e)) #f)
+ 
+
+
+
+;mpowerset
+(define (mpowerset list)
+  (cond 
+    [(empty? list) '(())]
+    [else (define powerFun (mpowerset (cdr list)))
+          (append powerFun 
+                  (map (lambda (s) (cons (car list) s)) powerFun))]))
+
+; Este método está basado en un método que ví en internet, lo leí, lo revisé paso por paso,
+; y me parece que si le entiendo, pero la verdad no se me ocurrió como hacerlo,
+; así que mejor pongo éste.  
