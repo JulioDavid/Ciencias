@@ -56,6 +56,17 @@
 ;(test (primes 11) '(2 3 5 7 11))
 ;(test (primes 1) '())
 
+;1.5 Función reduce el id se usa para hacer referencia de casos base especificos
+(define (reduce f lst x)
+  (cond
+    [(empty? lst) x]
+    [else(f(car lst)(reduce f (cdr lst)x))]))
+
+    
+(test (reduce + '(1 2 3 4 5 6 7 8 9 10) 0) 55)
+(test (reduce zip '((1 2 3) (4 5 6) (6 7 8))'()) '((1 (4 7)) (2 (5 8)) (3 (6 9))))
+(test (reduce * '(1 3 5 7) 1) 105)
+(test (reduce - '(5 4) 0) 1)
 
 
 ;Función zip
@@ -87,6 +98,36 @@
  ;  (test (mconcat '(4 6) '()) '(4 6))
  ;  (test (mconcat '(3) '(5 1)) '(3 5 1))
  ;  (test (mconcat '(3 4) '(5 1)) '(3 4 5 1))
+
+;2.2 Función mmap
+
+(define (mmap f lst)
+  (cond
+    [(empty? lst) empty]
+    [else (cons (f (car lst))
+                (mmap f (cdr lst)))]))
+
+
+(test (mmap add1'(1 2 3 4 5 6)) '(2 3 4 5 6 7)) 
+(test (mmap car '((1 2 3) (4 5 6) (7 8 9))) '(1 4 7))
+(test (mmap cdr '((1 2 3) (4 5 6) (7 8 9))) '((2 3) (5 6) (8 9)))
+
+
+;2.1 Función mconcat
+(define (mconcat l1 l2)
+  (cond
+    [(empty? l1) l2]
+    [(empty? l2) l1]
+    [else (cons (car l1) (mconcat (cdr l1) l2))] ))
+                        
+
+(test (mconcat '(1 2 3) '(4 5 6)) '(1 2 3 4 5 6))
+(test (mconcat '() '(4 5 6)) '(4 5 6))
+(test (mconcat '(1 2 3) '()) '(1 2 3))
+(test (mconcat '()'())'())
+(test (mconcat '(1) '(1))'(1 1))
+
+
 
 
    
