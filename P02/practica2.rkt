@@ -30,13 +30,13 @@
   [Square(e Position?) (n number?)]
   [Rectangle(e Position?) (high number?) (lng number?)])
 
-;;Area
-(define (area (fig Figure?))
-  (cond
-    [(Circle? fig) 1]  
-    [(Square? fig) 2]
-    [(Rectangle? fig) 3]))
 
+;;Area
+(define (area fig)
+  (type-case Figure fig
+    [Circle (e n)(* pi (* n n))]
+    [Square (e n)(* n n)]
+    [Rectangle (e high lng) (* high lng)]))
 
 
 ;;Coordinates
