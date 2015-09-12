@@ -3,14 +3,13 @@
 ;;Array
 (define-type Array
   [MArray (n number?)
-          (l list?)])
+          (l list?)]) 
 
-(MArray 4 '(1 2 3)) 
 
 ;MList
 (define-type MList
   [MEmpty]
-  [MCons (e any?)(l MList?)])
+  [MCons (e any?) (lst MList?)])
 
 ;;Para aceptar elementos de cualquier tipo
 (define (any? e) #t)
@@ -37,6 +36,13 @@
     [Circle (e n)(* pi (* n n))]
     [Square (e n)(* n n)]
     [Rectangle (e high lng) (* high lng)]))
+
+
+;;lengthML
+(define (lengthML lst)
+  (type-case MList lst
+    [MEmpty () 0]
+    [MCons (e l)(+ 1 (lengthML l))]))
 
 
 ;;Coordinates
