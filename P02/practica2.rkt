@@ -94,3 +94,16 @@
 (test (setvalueA 5 0 (MArray 0 '())) "Array out of bounds")
 (test (setvalueA 6 3 (MArray 3 '(1 2 3))) (MArray 3 '(1 2 6)))
 (test (setvalueA 6 7 (MArray 10 '(0 1 2 3 4 5 5 7 8 9))) (MArray 10 '(0 1 2 3 4 5 6 7 8 9))) 
+
+; Función MArraytoMList
+(define (MArray2MList ar)
+  (type-case Array ar
+    [MArray (i list)
+            (cond
+              [(empty? list) MEmpty]
+              [else (ccons list)])]))
+;Función Auxiliar a MArray2MList
+(define (ccons list)
+  (cond
+    [(empty? list) MEmpty]
+    [MCons (car list) (ccons (cdr list))] ))
