@@ -100,10 +100,13 @@
   (type-case Array ar
     [MArray (i list)
             (cond
-              [(empty? list) MEmpty]
+              [(empty? list) (MEmpty)]
               [else (ccons list)])]))
 ;Función Auxiliar a MArray2MList
 (define (ccons list)
   (cond
-    [(empty? list) MEmpty]
+    [(empty? list) (MEmpty)]
     [MCons (car list) (ccons (cdr list))] ))
+
+(test (ccons '()) (MEmpty))
+(test (ccons '(1)) (MCons 1 (MEmpty)))
