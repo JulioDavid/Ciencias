@@ -105,8 +105,8 @@
 ;Función Auxiliar a MArray2MList
 (define (ccons list)
   (cond
-    [(empty? list) (MEmpty)]
-    [MCons (car list) (ccons (cdr list))] ))
+    [(empty? list) (MEmpty)]    ;caso base, lista vacía
+    [MCons (car list) (ccons (cdr list))] )) ;Concatena el primer elemento de la lista con el resto de la lista (recursando en la función ccons)
 
 (test (ccons '()) (MEmpty))
-(test (ccons '(1)) (MCons 1 (MEmpty)))
+(test (ccons '(1)) (MCons 1 (MEmpty))) ;por alguna razón siempre devuelve (MEmpty), no importa qué lista ponga, todos lo casos devuelve (MEmpty)
