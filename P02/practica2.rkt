@@ -5,7 +5,7 @@
   [MArray (n number?)
           (l list?)])
 
-(MArray 4 '(1 2 3)) 
+(define ar (MArray 3 '(1 2 3)))
 
 ;MList
 (define-type MList
@@ -62,3 +62,24 @@
 
 (define plazas (MCons plaza-satelite (MCons plaza-perisur (MEmpty))))
 
+; Función SetValueA
+(define (setvalueA n p ar)
+  (type-case Array ar 
+    [MArray (i list)
+            (cond
+              [(equal? p 0) "Array out of bounds"]
+              [(> p i) "Array out of bounds"]
+              [else (MArray i (replace list n p))] )]))
+
+; Replace(lista, n elemento a cambiar, i indice)
+(define (replace list n p)
+  (cond
+    ;Este primer y único caso está cubierto por setValueA, 
+    ;[(<= (length list) p) "Array out of bounds"]
+    [(equal? p 1) (cons n (cdr list))]
+    [else (cons (car list) (replace (cdr list) n (- p 1)))] ))
+
+;Test para setvalueA
+(test (setvalueA 5 0 (MArray 0 '())) "Array out of bounds")
+(test (setvalueA 6 3 (MArray 3 '(1 2 3))) (MArray 3 '(1 2 6)))
+(test (setvalueA 6 7 (MArray 10 '(0 1 2 3 4 5 5 7 8 9))) (MArray 10 '(0 1 2 3 4 5 6 7 8 9))) 
