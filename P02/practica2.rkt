@@ -36,6 +36,11 @@
     [Square (e n)(* n n)]
     [Rectangle (e high lng) (* high lng)]))
 
+;;Test para area
+(test (area (Circle (2D-Point 5 5) 4)) 50.26548245743669)
+(test (area (Square (2D-Point 0 0) 12)) 144)
+(test (area (Rectangle (2D-Point 3 4) 4 9)) 36)
+
 
 
 ;;lengthML
