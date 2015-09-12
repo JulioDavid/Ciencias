@@ -1,31 +1,64 @@
 #lang plai
 
+;;Array
+(define-type Array
+  [MArray (n number?)
+          (l list?)])
+
+(MArray 4 '(1 2 3)) 
+
+;MList
+(define-type MList
+  [MEmpty]
+  [MCons (e any?)(l MList?)])
+
+;;Para aceptar elementos de cualquier tipo
+(define (any? e) #t)
+
+;;NTree
+(define-type NTree
+  [TLEmpty]
+  [NodeN (num number?)(lst list?)])
+
 ;;Position
 (define-type Position
-  [2D-Point (num real?)
-            (num2 real?)])
+  [2D-Point(x number?) (y number?)])
 
 ;;Figure
 (define-type Figure
-  [Circle (pos Position?)
-          (radio number?)])
+  [Circle (e Position?) (n number?)]
+  [Square(e Position?) (n number?)]
+  [Rectangle(e Position?) (high number?) (lng number?)])
+
+
+;;Area
+(define (area fig)
+  (type-case Figure fig
+    [Circle (e n)(* pi (* n n))]
+    [Square (e n)(* n n)]
+    [Rectangle (e high lng) (* high lng)]))
+
 
 ;;Coordinates
 (define-type Coordinates
   [GPS (lat number?)
        (long number?)])
+
 ;;Location
 (define-type Location
   [building (name string?)
             (loc GPS?)])
-;;Coordenadas GPS
+
+
+;; Coordenadas GPS
 (define gps-satelite (GPS 19.510482 -99.23411900000002))
 (define gps-ciencias (GPS 19.3239411016 -99.179806709))
 (define gps-zocalo (GPS 19.432721893261117 -99.13332939147949))
 (define gps-perisur (GPS 19.304135 -99.19001000000003))
-
 (define plaza-satelite (building "Plaza Satelite" gps-satelite))
 (define ciencias (building "Facultad de Ciencias" gps-ciencias))
 (define zocalo (building "Zocalo" gps-zocalo))
 (define plaza-perisur (building "Plaza Perisur" gps-perisur))
+
 (define plazas (MCons plaza-satelite (MCons plaza-perisur (MEmpty))))
+
