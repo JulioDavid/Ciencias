@@ -1,0 +1,21 @@
+- Ejercicio 2:
+
+a) Lo que dice Ben está bien, esto es debido a como se almacenan las variables con los ambientes, en lugar de
+   buscar el ambiente anterior, busca en el siguiente ambiente, y debido a esto, las asignaciones más viejas
+   están en los ambientes anteriores, y de esta manera, básicamente cuando estás analizando el resto de programa
+   ignoras las nuevas asignaciones de las variables ya asignadas, por lo tanto lo que Ben propone es una manera
+   extraña de hace alcance estático, y probablemente no la más eficiente.
+
+b) No pasa :P
+
+
+- Ejercicio 3:
+
+a) {with ((x 5) (adder (fun (x) (fun (y) (+ x y)))) (z 3))
+   	 (with ((y 10) (add5 (adder x)))
+	 (Add5 (with ((x (+ 10 z)) (y (add5 0)))
+	       (+ (+y x) z))))}
+
+   {with (5 (adder (fun <0> (fun (y) (+ <0> y)))) 3)
+   	 (with (10 (add5 (adder <0>)))
+	       (add5 (with ((<2> (+ 10 <1>))
