@@ -1,0 +1,14 @@
+- Ejercicio 2:
+
+a) Lo que dice Ben está bien, mientras antes de la definición de la función en este caso "fun", solo haya una
+   asignación a la variable en cuestión (en este caso x), en caso de que haya más asignaciones de x, todas antes de
+   "fun", no va a tomar la misma que el alcance estático tomaría, ya que el estatico toma la asignación de x en el
+   ambiente anterior, que no es necesariamente la más vieja.
+
+b) {with (x 4)
+    {with (x 6)
+     {with (f (fun (y) (+ x y)))
+      {with (x 5)
+       {f 10}}}}}
+
+    - En este caso, estático evalúa 16, dinámico evalúa 15 y DinamicBen (Sí lo acabo de bautizar) evalúa 14.	
