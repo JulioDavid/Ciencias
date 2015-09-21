@@ -11,4 +11,218 @@ b) {with (x 4)
       {with (x 5)
        {f 10}}}}}
 
-    - En este caso, estático evalúa 16, dinámico evalúa 15 y DinamicBen (Sí lo acabo de bautizar) evalúa 14.	
+    - En este caso, estático evalúa 16, dinámico evalúa 15 y DinamicBen (Sí lo acabo de bautizar) evalúa 14.
+
+
+-Ejercicio 3
+
+a) {with {{x 5} {adder {fun {x} {fun {y} {+ x y}}}} {z 3}}
+      {with {{y 10} {add5 {adder x}}}
+            {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                        {+ {+ y x} z}}}}}
+
+{with {5 {fun {x} {fun {y} {+ x y}}} 3}
+      {with {10 <: 0 1>}
+            {<: 0 1> {with {{+ 10 <: 1 2 >} {<: 0 1 > 0}}
+                           {+ {+ <: 1 0 > <: 2 0 >} <: 2 2 >}}}}}
+
+
+interp({with {{x 5} {adder {fun {x} {fun {y} {+ x y}}}} {z 3}}
+             {with {{y 10} {add5 {adder x}}}
+                   {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}}}}
+
+interp(subst({with {{y 10} {add5 {adder x}}}
+                   {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}}})
+            x
+            (interp 5)) *   * (interp 5) = 5
+
+subst({with {{y 10} {add5 {adder x}}}
+                   {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}}}
+            x
+            5)
+
+if(symbol=? y x 5)
+      (with y
+            (subst 10 x 5) = 10
+            (subst {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}} x 5))
+
+(subst {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}} x 5)
+(app add5 (subst {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}} x 5))
+(subst {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}} x 5)
+if(symbol=? x x)
+    (with x
+          (subst {+ 10 z} x 5)
+          {+ {+ y x} z})
+
+(subst {+ 10 z} x 5)
+    (add (subst 10 x 5)
+         (subst z x 5))
+(subst 10 x 5)=10
+(subst z x 5)
+     if(symbol=? z x) = z
+
+#(add 10 z)
+
+    (with x
+          (add 10 z)
+          {+ {+ y x} z}) = {+ {+ y (add 10 z)} z}
+
+(subst {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}} x 5)
+if(symbol=? y x)
+    (with y
+          (subst {add5 0} x 5)
+          (subst {+ {+ y x} z} x 5))
+
+(subst {add5 0} x 5)
+(app add5 (subst 0 x 5))
+(subst 0 x 5)= 0
+
+(subst {+ {+ y x} z} x 5)
+      (add (subst {+ y x} x 5))
+           (subst z x 5)
+(subst {+ y x} x 5)
+      (add (subst y x 5)
+           (subst x x 5))
+(subst y x 5) (if (symbol=? y x)
+                  y)
+(subst x x 5) (if (symbol=? x x)
+                  5)
+#(add (y 5))
+
+   (with y
+         0
+         (add (y 5)))= (add 0 5)
+
+
+interp({with {{x 5} {adder {fun {x} {fun {y} {+ x y}}}} {z 3}}
+             {with {{y 10} {add5 {adder x}}}
+                   {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}}}})
+
+interp(subst({with {{y 10} {add5 {adder x}}}
+                   {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}}})
+            adder
+            (interp {fun {x} {fun {y} {+ x y}}}))
+
+
+interp(subst({with {{y 10} {add5 {adder x}}}
+                   {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}}})
+            z
+            (interp 3))
+
+(subst({with {{y 10} {add5 {adder x}}}
+                   {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}}})
+            z
+            (interp 3)) **(interp 3)= 3
+
+(if (symbol=? y z)
+    (with y
+          (subst 10 z 3)
+          (subst {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}} z 3)))
+
+(subst 10 z 3) = 10
+(subst {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}} z 3)
+       (app add5 (subst {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}} z 3))
+            (subst {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}} z 3)
+          * (if (symbol=? x z)
+                (with x
+                      (subst {+ 10 z} z 3) = (add 10 3)
+                      (subst {+ {+ y x} z} z 3))) = (add (add y x) 3)
+          * (add (add y (add 10 3)) 3)
+                
+(subst {+ 10 z} z 3)
+     (add (subst 10 z 3) = 10
+          (subst z z 3) = (if (symbol=? z z)
+                              3)
+     (add 10 3)
+
+(subst {+ {+ y x} z} z 3)
+      (add (subst {+ y x} z 3) = (add y x)
+           (subst z z 3)) = 3
+      (subst {+ y x} z 3) = (add (subst y z 3) = y
+                                 (subst x z 3) = x
+                            (add y x)
+
+      (subst z z 3)= (if (symbol=? z z)
+                         3)
+(add (add y x) 3)
+
+(with x
+     (add 10 3)
+     (add (add y x) 3)) = (add (add y (add 10 3)) 3)
+
+
+          
+          * (if (symbol=? y z)
+                (with y
+                      (subst {add5 0} z 3) =  (app add5 0)
+                      (subst {+ {+ y x} z} z 3))) = (add (add y x) 3)
+          
+(subst {add5 0} z 3)
+    (app add5 (subst 0 z 3))
+    (app add5 0)
+
+(subst {+ {+ y x} z} z 3)
+      (add (subst {+ y x} z 3) = (add y x)
+           (subst z z 3)) = 3
+      (subst {+ y x} z 3) = (add (subst y z 3) = y
+                                 (subst x z 3) = x
+                            (add y x)
+
+      (subst z z 3)= (if (symbol=? z z)
+                         3)
+(add (add y x) 3)
+
+(with y
+      (app add5 0)
+      (add (add y x) 3))
+
+*(add (add (app add5 0) x) 3)
+
+
+*=(if(symbol=? add5 z)
+   (with add5
+         (subst {adder x} z 3) = (app adder x)
+         (subst {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}} z 3))) = (app add5 (add (add y (add 10 3)) 3))
+
+
+(subst {adder x} z 3)
+     (app adder (subst x z 3)) = (app adder x)
+     (subst x z 3) = (if( symbol=? x z)
+                        x)
+     
+(subst {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}} z 3)
+     (app add5 (subst {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}} z 3))
+     (subst {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}} z 3)
+            (if (symbol=? x z)
+                    (with x 
+                          (subst {+ 10 z} z 3) = (add 10 3)
+                          (subst {+ {+ y x} z} z 3))) (add (add y x) 3)
+                                                      
+=(app add5 (add (add y (add 10 3)) 3))
+
+(with add5
+         (subst {adder x} z 3) = (app adder x)
+         (subst {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                               {+ {+ y x} z}}} z 3))) = (app add5 (add (add y (add 10 3)) 3))
+                                                      
+*=(app (app adder x) (add (add y (add 10 3)) 3))	
