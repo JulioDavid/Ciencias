@@ -1,3 +1,80 @@
+Tarea 1
+
+Problema 1
+~Provee un esquema para un programa que ilustre la no-linealidad de la implementación{on de ambientes basada en un 
+stack. Explica brevemente por que su ejecución en tiempo no es lineal con respecto al tamaño de su entrada.
+
+{with {x 6}
+	{with {y 7}
+		{with {z 8}
+			{+ x {+ y z}}}}}
+
+= {with {y 7}
+	{with {z 8}
+		{+ 6 {+ y z}}}}
+
+= {with {z 8}
+	{+ 6 {+ 7 z}}}
+
+= {+ 6 {+ 7 8}}}
+
+
+=21
+
+La ejecución en tiempo no es lineal con respecto al tamaño de la entrada ya que en el ejemplo anterior 
+el interprete tiene que aplicar sustitución 3 veces;una por cada with.Por lo que se puede generalizar 
+entonces si nuestro programa tuviese tamaño N(Medido por los nodos del àrbol de sintáxis abstracta)entonces cada substitución recorre el resto del programa almenos una vez
+Haciendo la complejidad de este intérprete O(N^2).
+   
+
+
+
+
+~Describe una estructura  de datos para un ambiente que un interprete de FWAE pueda usar para mejorar su complejidad.
+
+Primero visualizamos cono es un FWAE:
+NotaciÛn BNF:
+
+<FWAE> ::= <num>
+	|{+ <FWAE> <FWAE>}
+	|{with {<id> <FWAE>}<FWAE>}
+	|<id>
+	|{<id> <FWAE>}
+
+
+Si queremos mejorar su complejidad de cuadrática a algo mas decente, podemos implementar el interprete con Tablas de dispersión donde nuestra llave será la variable x, y o z
+y el valor será por el que hemos de sustituir en los withs
+
+
+
+
+~Muestra como usarÌa el interprete Está nueva estructura de datos.
+<FWAE> ::= <num>
+	|{+ <FWAE> <FWAE>}
+	|{with {<id> <FWAE>}<FWAE>}
+	|<id>
+	|{<id> <FWAE>}
+
+
+Usaremos el ejemplo del primer inciso
+
+{with {x 6}
+	{with {y 7}
+		{with {z 8}
+			{+ x {+ y z}}}}}
+
+
+el primer with se hace en tiempo lineal al igual que el segundo y el tercero por lo que
+{6+{+7}8}
+
+~Indica cual es la nueva complejidad del interprete(an·lisis del peor caso)y de forma informal pero rigurosa pruebalo.
+
+como la complejidad interna de la estructura de Datos de la HasTable es lineal en el mejor caso, en el peor caso se tiene 
+
+Como las hashtables tienen complejidad lineal en e mejor de los casos pero en el peor de los casos es log (n) por lo que nuestro ínter preste al estar implementado en esta hashtable también tiene complejidades en el peor caso log(n)
+
+
+
 - Ejercicio 2:
 
 a) Lo que dice Ben está bien, mientras antes de la definición de la función en este caso "fun", solo haya una
