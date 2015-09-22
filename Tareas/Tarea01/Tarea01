@@ -27,7 +27,6 @@ a) {with {{x 5} {adder {fun {x} {fun {y} {+ x y}}}} {z 3}}
                            {+ {+ <: 1 0 > <: 2 0 >} <: 2 2 >}}}}}
 
 
-#lang racket
 
 (interp({with {{x 5} {adder {fun {x} {fun {y} {+ x y}}}} {z 3}}
              {with {{y 10} {add5 {adder x}}}
@@ -77,13 +76,6 @@ if(symbol=? x x)
            {+ {+ y x} z}) = {+ {+ y (add 10 z)} z}
 
 #(app add5 {+ {+ y (add 10 z)} z})
-;;AQUIIIIIIIIIII
-(interp (app add5 {+ {+ y (add 10 z)} z}))
-         (local ([define fun-val (interp add5)])
-           (interp (subst (
-
-
-;;AQUIIIIIIIIIIII
                            
 
 
