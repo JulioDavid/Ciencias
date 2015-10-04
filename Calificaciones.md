@@ -13,4 +13,8 @@ Falto implementación de primes, reduce, mmap, mfilter.
 
 Tienen todos los ADT pero solo implementaron area y lengthML correctamente.
 
-**Calificacion: 4**
+**Calificación: 4**
+
+### Practica 3
+
+**Calificación: 0**
