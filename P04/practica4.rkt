@@ -11,7 +11,7 @@
                                      (desugar-body))
                                 (map (lambda (x) (desugar (bind-val x))) bindings))]
     [idS (name) (id name)]
-    [finS (params body) (fin params (desugar body))]
+    [funS (params body) (fin params (desugar body))]
     [else '()]))
   
   ;(error 'desugar "Not implemented"))
@@ -25,8 +25,22 @@
   (desugar (parse sexp)))
 
 (define (interp expr env)
+  ;shriram code
+  (type-case FWAE expr
+    [num (n) n]
+    [add (l r) (+ (interp l env) (interp r env))]
+    [with (bound-id named-expr bound-body)
+          (interp (subst bound-body
+                         bound-id
+                         (num (interp named-expr env)))
+                  env)]
+    ;shriram code up to here
+    [(define (lookup name env)
+       (env name))]
+    ))
+  
   ;; Implementar interp
-  (error 'interp "Not implemented"))
+  ;(error 'interp "Not implemented"))
 
 (define (rinterp expr)
   (interp expr (mtSub)))
