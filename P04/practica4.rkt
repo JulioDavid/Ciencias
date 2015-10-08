@@ -6,16 +6,26 @@
 
 (define (desugar expr)
   (type-case FAES expr
-    [numS(n) (num n)]
-    [withS (bindings body) (app (fun (map (lambda (x) (bind-name x)) bindings)
-                                     (desugar-body))
-                                (map (lambda (x) (desugar (bind-val x))) bindings))]
-    [idS (name) (id name)]
-    [funS (params body) (fin params (desugar body))]
-    [else '()]))
-  
-  ;(error 'desugar "Not implemented"))
+    [numS(n) (num n) 
+    [idS (s) (id s)]
+    [binopS (f l r) (binop f (desugar l) (desugar r))]
+    [withS (bindings body)                            
+	   (app (fun (map (lambda (bind)
+			    (bind-name bind)) bindings) 
+		     (desugar body))                             
+		(map (lambda (bind)            
+		       (desugar (bind-val bind))) bindings))]                     
+    [with*S (bindings body) (matryoshka bindings body)]            
+    [funS (params body) (fun params (desugar body))]                                 
+    [appS (fin args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))] )) 
 
+
+(define (matryoshka bindings body)
+  (cond
+    [(empty? bindings) (desugar body)]
+    [else (app (fun (list (bind-name (car bindings)))
+                    (matryoshka (cdr bindings) body))
+               (list (desugar (bind-val (car bindings)))))] ))
 
 (test (desugar (parse '{+ 3 4})) (binop + (num 3) (num 4)))
 (test (desugar (parse '{+ {- 3 4} 7})) (binop + (binop - (num 3) (num 4)) (num 7)))
@@ -26,21 +36,21 @@
 
 (define (interp expr env)
   ;shriram code
-  (type-case FWAE expr
-    [num (n) n]
-    [add (l r) (+ (interp l env) (interp r env))]
-    [with (bound-id named-expr bound-body)
-          (interp (subst bound-body
-                         bound-id
-                         (num (interp named-expr env)))
-                  env)]
+  ;(type-case FWAE expr
+   ; [num (n) n]
+    ;[add (l r) (+ (interp l env) (interp r env))]
+    ;[with (bound-id named-expr bound-body)
+     ;     (interp (subst bound-body
+      ;                   bound-id
+       ;                  (num (interp named-expr env)))
+        ;          env)]
     ;shriram code up to here
-    [(define (lookup name env)
-       (env name))]
-    ))
+    ;[(define (lookup name env)
+     ;  (env name))]
+    ;))
   
   ;; Implementar interp
-  ;(error 'interp "Not implemented"))
+  (error 'interp "Not implemented"))
 
 (define (rinterp expr)
   (interp expr (mtSub)))
@@ -67,3 +77,12 @@
 (test (rinterp (cparse '{with* {{x 3} {y {+ 2 x}} {x 10} {z {+ x y}}} z})) (numV 15))
 (test/exn (rinterp (cparse '{with {{x 10} {x 20}} x})) "El id x está repetido")
 (test (rinterp (cparse '{with* {{x 10} {x 20}} x})) (numV 20))
+
+
+
+    ;; [withS (bindings body) (app (fun (map (lambda (x) (bind-name x)) bindings)
+    ;;                                  (desugar-body))
+    ;;                             (map (lambda (x) (desugar (bind-val x))) bindings))]
+    ;; [idS (name) (id name)]
+    ;; [funS (params body) (fin params (desugar body))]
+    ;; [else '()]))
