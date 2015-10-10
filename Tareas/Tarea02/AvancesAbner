@@ -1,12 +1,14 @@
 Problema 2
 
-Java es peresozo pero inteligente, lo que llaman Smart/Lazy, según los interwebs...
-La verdad es que no tengo idea de qué hace, creo que sí es perezoso, PERO, según el programa que hice (que estará
-anexado como "proof.java" en la carpeta de tarea), me mostró que dependía del orden en el que pusieras la operación,
-lo que hago es muy sencillo, creo un objeto con dos booleanos y en el main creo dos booleanos y opero con un
+Por lo que estuve buscando en los interwebz, java es Smart/Lazy.
+
+Pero debido al programa que hice (el cuál está anexado en la carpeta de la tarea con el nombre de "proof.java"), es
+una especie de glotón inteligente, ya que dependiendo del orden en el que pusiera los operadores.
+Lo que hice es muy sencillo, creo un objeto con dos booleanos y en el main creo dos booleanosy opero con un
 OR lógico; el booleano del objeto (cuyo valor tiene que ser falso) es escrito primero, es decir [getA() || B],
 la llamada al método GET que devuelve el valor, sí es operada; el booleano cuyo fue creado en el main
-(y su valor tiene que ser true), es escrito primero, es decir [B || getA()], entonces
-(lo que yo creo que es culpa del compilador), hace que no evalúe getA(), ya que lógicamente si valor es irrelevante,
-por que B es un true, y el OR se hace True con uno de los operandos siendo true.
-Según yo el perezoso debería dar True antes de evaluar el [getA()].
+(y su valor tiene que ser true), es escrito primero, es decir [B || getA()], entonces lo que hace es que no evalúe
+getA() (lo que yo creo que es culpa del compilador), ya que lógicamente si valor es irrelevante, por que Bes un
+true, y el OR se hace true con uno de los operandos siendo true.
+
+
