@@ -1,0 +1,26 @@
+public class true{
+
+    boolean A = false;
+    boolean B = true;
+    
+    public boolean getA(){
+	System.out.println("A has been evaluated");
+	return this.A;
+    }
+    public boolean getB(){
+	System.out.println("B has been evaluated");
+	return this.B;
+    }
+
+
+    
+    public static void main(String [] arg){
+	System.out.println("This evaluation");
+	System.out.println(boolean = this.A || this.B);
+	
+	System.out.println("This/get evaluation");
+	System.out.println(boolean = A || getB);
+    }
+    
+
+}
