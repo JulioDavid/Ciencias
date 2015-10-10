@@ -28,3 +28,14 @@ getA() (lo que yo creo que es culpa del compilador), ya que lógicamente si valo
 true, y el OR se hace true con uno de los operandos siendo true.
 
 
+Problema 4.
+
+Tener una evalucion perezosa nos dice que una funcion no necesita ser evaluada, a menos que se requiera el resultado.
+Sabemos que las llamadas a las funciones no son evaluadas necesariamente en el orden como aparecen en el
+codigo. Si las funciones modifican el estado, entonces nos importa el orden en el que son ejecutadas.
+Es por eso que los lenguajes con evalucion perezosa necesitan tener estados para poder verificar que las funciones se
+fueron ejecutando en el orden que queremos. 
+Si despues de ver esto, permitimos las operaciones con estados, entonces regresamos al problema original, el cual es 
+no saber realmente si las funciones se estan ejecutando en el orden original o no.
+Es por eso que los lenguajes perezosos no aceptan operaciones con estados.
+
