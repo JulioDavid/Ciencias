@@ -1,3 +1,15 @@
+
+Problema 1
+
+FAE es Turing-Completo.
+Para que un lenguaje funcional pueda ser Turing-completo, necesita:
+Condicionales.
+Recursión.
+FAE tiene funciones, aplicación de funciones, expresiones aritméticas.
+Las condicionales de FAE pueden definirse con el cálculo lambda que el lenguaje nos permite utilizar.
+La recursión de FAE en la aplicación de funciones se puede definir mediante el combinador Y, el cual se puede aplicar puesto que nuestro lenguaje nos permite usar el cálculo lambda. Con esto, tenemos que podemos utilizar funciones de primera clase, que significa que podemos pasar funciones como argumento para otras funciones, regresar funciones como resultado de evaluar otra función, y  crear funciones conforme las vayamos utilizando. 
+El combinador Y se usa para la recursión anónima, ya que la función no se manda a llamar explícitamente con su mismo nombre, ésta toma un argumento, el cual es una función no recursiva y regresa una función recursiva. 
+
 Problema 2
 
 Por lo que estuve buscando en los interwebz, java es Smart/Lazy.
