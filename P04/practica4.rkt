@@ -34,7 +34,30 @@
 (define (cparse sexp)
   (desugar (parse sexp)))
 
-(define (interp expr env)
+
+  (define (interp expr ds)
+  (type-case FAE expr
+    [num (n) (numV n)]
+    [binop (f l r) (numf f (interp l ds) (interp r ds))]
+    [id (v) (lookup v ds)]
+    [fun (bound-id bound-body) (closureV bound-id bound-body ds)]
+    [app (fun-expr arg-expr)
+         (local ([define fun-val (interp fun-expr ds)]) 
+           (interp (closureV-body fun-val) 
+                   (aSub (closureV-param fun-val) 
+                         (interp arg-expr ds) 
+                         (closureV-env fun-val))))]))
+
+(define (lookup name ds)
+  (type-case Env ds
+    [mtSub () (error 'lookup "no binding for identifier")]
+    [aSub (bound-name bound-value rest-ds) (if (symbol=? bound-name name)
+                                               bound-value
+                                               (lookup name rest-ds))]))
+
+(define (numf f n1 n2)
+  (numV (f (numV-n n1) (numV-n n2))))
+
   ;shriram code
   ;(type-case FWAE expr
    ; [num (n) n]
@@ -50,7 +73,7 @@
     ;))
   
   ;; Implementar interp
-  (error 'interp "Not implemented"))
+  
 
 (define (rinterp expr)
   (interp expr (mtSub)))
