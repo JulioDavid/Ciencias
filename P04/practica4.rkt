@@ -6,7 +6,7 @@
 
 (define (desugar expr)
   (type-case FAES expr
-    [numS(n) (num n) 
+    [numS(n) (num n)] 
     [idS (s) (id s)]
     [binopS (f l r) (binop f (desugar l) (desugar r))]
     [withS (bindings body)                            
@@ -17,7 +17,7 @@
 		       (desugar (bind-val bind))) bindings))]                     
     [with*S (bindings body) (matryoshka bindings body)]            
     [funS (params body) (fun params (desugar body))]                                 
-    [appS (fin args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))] )) 
+    [appS (fin args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))]))
 
 
 (define (matryoshka bindings body)
@@ -57,23 +57,6 @@
 
 (define (numf f n1 n2)
   (numV (f (numV-n n1) (numV-n n2))))
-
-  ;shriram code
-  ;(type-case FWAE expr
-   ; [num (n) n]
-    ;[add (l r) (+ (interp l env) (interp r env))]
-    ;[with (bound-id named-expr bound-body)
-     ;     (interp (subst bound-body
-      ;                   bound-id
-       ;                  (num (interp named-expr env)))
-        ;          env)]
-    ;shriram code up to here
-    ;[(define (lookup name env)
-     ;  (env name))]
-    ;))
-  
-  ;; Implementar interp
-  
 
 (define (rinterp expr)
   (interp expr (mtSub)))
