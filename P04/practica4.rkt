@@ -31,10 +31,6 @@
 (test (desugar (parse '{+ {- 3 4} 7})) (binop + (binop - (num 3) (num 4)) (num 7)))
 (test (desugar (parse '{with {{x {+ 5 5}}} x})) (app (fun '(x) (id 'x)) (list (binop + (num 5) (num 5))) ))
 
-(define (cparse sexp)
-  (desugar (parse sexp)))
-
-
   (define (interp expr ds)
   (type-case FAE expr
     [num (n) (numV n)]
@@ -54,6 +50,9 @@
     [aSub (bound-name bound-value rest-ds) (if (symbol=? bound-name name)
                                                bound-value
                                                (lookup name rest-ds))]))
+
+(define (cparse sexp)
+  (desugar (parse sexp)))
 
 (define (numf f n1 n2)
   (numV (f (numV-n n1) (numV-n n2))))
