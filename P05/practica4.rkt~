@@ -46,8 +46,8 @@
                       [expr (length body)])
                  (interp (closureV-body funV)
                          (if (= fbody expr) (mParam funV-params body env (closureV-env funV))
-                             (error 'interp (~a "Arity mismatch")))))
-               (error 'interp (string-append (~a funV) "Invalid Expresion"))))]))
+                         (error 'interp (~a "Arity mismatch")))))
+           (error 'interp (string-append (~a funV) "Invalid Expresion"))))]))
 
 ;;Aux Fun for multi param app
 (define (mParam params args args-ds a-ds)
