@@ -2,12 +2,35 @@
 ;Según yo este base es identica a la de la practica 4, solo que en lugar de definir FAE definimos el RCFAEL.
 ;Los parse son identicos, las bisquedas son iguales, no hay pedo con eso.
 
+;Bindings for RCFAELS
 (define-type Binding
-  [bind (name symbol?) (val RCFAEL?)])
+  [bind (name symbol?) (val RCFAELS?)])
+
+;RCFAELS type definition, for desugar
+(define-type RCFAELS
+  [numS (n number?)]
+  [boolS (v boolean?)]
+  [idS (name symbol?)]
+  [funS (params (listof symbol?))
+       (body RCFAELS?)]
+  [appS (fun RCFAELS?)
+       (args (listof RCFAELS?))]
+  [binopS (f procedure?)
+         (l RCFAELS?)
+         (r RCFAELS?)]
+  [withS (bindings 
+         (listof bind?))(body RCFAELS?)]
+  [if0S (cond RCFAELS?)
+       (then RCFAELS?)
+       (else RCFAELS?)]
+  [recS (id RCFAELS?) (expr RCFAELS?) (body RCFAELS?)]
+  [lstS (error "not implemented yet")] )
+
 
 ;RCFAEL type definition
 (define-type RCFAEL
   [num (n number?)]
+  [bool (v boolean?)]
   [id (name symbol?)]
   [fun (params (listof symbol?))
        (body RCFAEL?)]

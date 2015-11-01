@@ -6,23 +6,24 @@
 
 ;desugar
 (define (desugar expr)
-  (type-case RCFAEL expr
-    [num (n) (numV n)]
-    [id (s) (id s)]
-    [binop (f l r) (binop f (desugar l) (desugar r))]
-    [with (bindings body env) ;this does NOT works                           
+  (type-case RCFAELS expr
+    [numS (n) (numV n)]
+    [boolS (v) (boolV v)] ;boolV?
+    [idS (s) (id s)]
+    [binopS (f l r) (binop f (desugar l) (desugar r))]
+    [withS (bindings body)                   
 	   (app (fun (map (lambda (bind)
 			    (bind-name bind)) bindings) 
 		     (desugar body))                             
 		(map (lambda (bind)            
 		       (desugar (bind-val bind))) bindings))]                               
-    [fun (params body) (fun params (desugar body))]                                 
-    [app (fun args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))]
-    [if0 (i j k) 
+    [funS (params body) (fun params (desugar body))]                                 
+    [appS (fun args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))]
+    [if0S (i j k) 
            (error "not implemented yet")]
-    [lst (i )
+    [lstS (i )
          (error "not implemented yet")]
-    [rec (id expr body) (error "no implemented yet")] ))
+    [recS (id expr body) (error "no implemented yet")] ))
 
 (define (matryoshka bindings body)
   (cond
@@ -35,18 +36,19 @@
 (define (interp expr env)
   (type-case RCFAEL expr
     [num (n) (numV n)]
+    [bool (v) (boolV v)] ;boolV?
     [id (v) (lookup v env)]
     [binop (f l r) (numf f (interp l env) (interp r env))]
     [fun (fun-id fun-body)
          (closureV fun-id fun-body env)]
     [app (fun-id fun-body)
          (local([define fun-val(interp fun-id env)])
-               (interp(closureV-body fun-val)
+               (interp (closureV-body fun-val)
                       (aSub (closureV-param fun-val)
-                            (interp fun-body env)
+                            (map (lambda (arg) (interp arg env)) fun-body)
                             (closureV-env fun-val))))]
-    [if0 (if then else)
-         (if (num-zero? (interp test env)) ;num-zero? 
+    [if0 (con then else)
+         (if (boolV-v (interp con env)) ;num-zero? 
              (interp then env)
              (interp else env))]  
     [rec (id expr body)
