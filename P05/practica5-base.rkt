@@ -1,35 +1,50 @@
 #lang plai
-					;Según yo este base es identica a la de la practica 4, solo que en lugar de definir FAE definimos el RCFAEL.
-					;Los parse son identicos, las bisquedas son iguales, no hay pedo con eso.
+;Según yo este base es identica a la de la practica 4, solo que en lugar de definir FAE definimos el RCFAEL.
+;Los parse son identicos, las bisquedas son iguales, no hay pedo con eso.
 
 (define-type Binding
   [bind (name symbol?) (val RCFAEL?)])
 
+;RCFAEL type definition
 (define-type RCFAEL
   [num (n number?)]
-  [with (bindings (listof bind?))
-	 (body RCFAEL?)]
   [id (name symbol?)]
   [fun (params (listof symbol?))
        (body RCFAEL?)]
   [app (fun RCFAEL?)
        (args (listof RCFAEL?))]
   [binop (f procedure?)
-	 (l RCFAEL?)
-	 (r RCFAEL?)])
+         (l RCFAEL?)
+         (r RCFAEL?)]
+  [with (name symbol?)(named-expr RCFAEL?)(body RCFAEL?)]   ;(bindings (listof bind?)(body RCFAEL?)]
+  [if0 (cond RCFAEL?)
+        (then RCFAEL?)
+        (else RCFAEL?)]
+  [rec (id RCFAEL?) (expr RCFAEL?) (body RCFAEL?)]
+  [lst (error "not implemented yet")] )
 
+
+;Type-Value
 (define-type RCFAEL-Value
   [numV (n number?)]
   [closureV (param (listof symbol?))
 	    (body RCFAEL?)
 	    (env Env?)])
 
+;Enviroment definition
 (define-type Env
   [mtSub]
   [aSub (name symbol?)
-	(value RCFAEL-Value?)
-	(env Env?)])
+        (value RCFAEL-Value?)
+        (env Env?)]
+  [aRecSub (name symbol?)
+           (value boxed-RCFAEL-Value?)
+           (env Env?)])
 
+;box
+(define (boxed-RCFAEL-Value? v)
+  (and (box? v)
+       (RCFAEL-Value? (unbox v))))
 
 ; FUNCIONES AUXILIARES
 
