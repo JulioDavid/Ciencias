@@ -19,6 +19,15 @@ Tienen todos los ADT pero solo implementaron area y lengthML correctamente.
 
 **Calificación: 0**
 
+### Practica 4
+
+Desugar: Bien
+Multi-param: No lo implementaron
+With*: Bien
+Interp: No esta bien implementado para expresiones with o with*
+
+**Calificación: 5**
+
 ## Tareas
 
 ### Tarea 1
