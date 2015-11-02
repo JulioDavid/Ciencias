@@ -29,22 +29,23 @@
 
 ;RCFAEL type definition
 (define-type RCFAEL
+  [id (name symbol?)]
   [num (n number?)]
   [bool (v boolean?)]
-  [id (name symbol?)]
+  [Mlist (error "not implemented yet")]
+  [with (bindings (listof bind?))(body RCFAEL?)]
+  [rec (id RCFAEL?) (expr RCFAEL?) (body RCFAEL?)]
   [fun (params (listof symbol?))
        (body RCFAEL?)]
+  [if0 (cond RCFAEL?)
+        (then RCFAEL?)
+        (else RCFAEL?)]
+  ;[equal? (id1 id2)]
   [app (fun RCFAEL?)
        (args (listof RCFAEL?))]
   [binop (f procedure?)
          (l RCFAEL?)
-         (r RCFAEL?)]
-  [with (name symbol?)(named-expr RCFAEL?)(body RCFAEL?)]   ;(bindings (listof bind?)(body RCFAEL?)]
-  [if0 (cond RCFAEL?)
-        (then RCFAEL?)
-        (else RCFAEL?)]
-  [rec (id RCFAEL?) (expr RCFAEL?) (body RCFAEL?)]
-  [lst (error "not implemented yet")] )
+         (r RCFAEL?)] )
 
 
 ;Type-Value
@@ -69,7 +70,8 @@
   (and (box? v)
        (RCFAEL-Value? (unbox v))))
 
-; FUNCIONES AUXILIARES
+; FUNCIONES AUXILIARES 
+; WE NEED TO MODIFY FROM DOWN HERE.
 
 ;; A::= <number>|<symbol>|listof(<A>)
 ;; B::= (list <symbol> <A>)
@@ -88,7 +90,17 @@
     [(+) +]
     [(-) -]
     [(*) *]
-    [(/) /]))
+    [(/) /]
+    [(<) <]
+    [(<=) <=]
+    [(>) >]
+    [(>=) >=]
+    [(and) (lambda (x y) (and x y))]
+    [(or) (lambda (x y) (or x y))] ))
+
+(define-type MList
+  [MEmpty]
+  [MCons (e RCFAEL?) (lst MList?)])
 
 ;; buscaRepetido: listof(X) (X X -> boolean) -> X
 ;; Dada una lista, busca repeticiones dentro de la misma
