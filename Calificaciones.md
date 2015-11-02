@@ -21,6 +21,18 @@ Tienen todos los ADT pero solo implementaron area y lengthML correctamente.
 
 ## Tareas
 
+### Tarea 1
+
+Problema I: Es O(n^2) con respecto al tamaño del stack, tiene que
+hacer pop tantas veces necesario hasta encontrar el valor que se busca.
+Si dicen que un Hash tiene O(log n) en el peor de los casos y lo tendrían
+que usar para n identificadores entonces la complejidad final seria mas
+bien O( n log n)
+Problema II: Bien.
+Problema III: Tiene errores sus coordenadas léxicas.
+
+**Calificación: 9**
+
 ### Tarea 2
 
 Problema 1: Les falto mas detalle de como se definen las condicionales
