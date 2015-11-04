@@ -32,8 +32,8 @@
   [id (name symbol?)]
   [num (n number?)]
   [bool (v boolean?)]
-  [Mlist (error "not implemented yet")]
-  [with (bindings (listof bind?))(body RCFAEL?)]
+  [Mlist (params (listof RCFAEL?))];Maybe MList? Maybe not MList ;(error "not implemented yet")]
+  [with (name symbol?) (named-expr RCFAEL?) (body RCFAEL?)] ;(bindings (listof bind?))(body RCFAEL?)]
   [rec (id RCFAEL?) (expr RCFAEL?) (body RCFAEL?)]
   [fun (params (listof symbol?))
        (body RCFAEL?)]
@@ -45,7 +45,7 @@
        (args (listof RCFAEL?))]
   [binop (f procedure?)
          (l RCFAEL?)
-         (r RCFAEL?)] )
+         (r RCFAEL?)])
 
 
 ;Type-Value

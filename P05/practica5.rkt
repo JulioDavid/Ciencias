@@ -8,7 +8,7 @@
 (define (desugar expr)
   (type-case RCFAELS expr
     [numS (n) (numV n)]
-    [boolS (v) (boolV v)] ;boolV?
+    [boolS (v) (bool v)] ;boolV?
     [idS (s) (id s)]
     [binopS (f l r) (binop f (desugar l) (desugar r))]
     [withS (bindings body)                   
@@ -36,7 +36,7 @@
 (define (interp expr env)
   (type-case RCFAEL expr
     [num (n) (numV n)]
-    [bool (v) (boolV v)] ;boolV?
+    [bool (v) (bool v)] ;boolV?
     [id (v) (lookup v env)]
     [binop (f l r) (numf f (interp l env) (interp r env))]
     [fun (fun-id fun-body)
@@ -48,7 +48,7 @@
                             (map (lambda (arg) (interp arg env)) fun-body)
                             (closureV-env fun-val))))]
     [if0 (con then else)
-         (if (boolV-v (interp con env)) ;num-zero? 
+         (if (bool (interp con env)) ;num-zero? 
              (interp then env)
              (interp else env))]  
     [rec (id expr body)
@@ -56,10 +56,21 @@
               (cyclically-bind-and-interp id
                                           expr
                                           env))]
-    [with (bound-id named-expr bound-body)
-          (error "not implemented yet")]
-    [lst (i)
+    [with  (bound-id named-expr bound-body)
+           (interp bound-body
+                   (aSub bound-id
+                         (interp named-expr env) env))] ;page 113 from Shriram's book
+    [Mlist (i)
          (error "not implemented yet")]  ))
+
+;;Cyclically-bind-and-interp : symbol RCFAEL env -> env
+(define (cyclically-bind-and-interp bound-id named-expr env)
+  (local ([define value-holder (box (numV 1729))]
+          [define new-env (aRecSub bound-id value-holder env)]
+          [define named-expr-val (interp named-expr new-env)])
+    (begin
+      (set-box! value-holder named-expr-val)
+      new-env)))
 
 ;Lookup
 (define (lookup name env)
