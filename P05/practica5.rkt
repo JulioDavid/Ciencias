@@ -8,24 +8,27 @@
 (define (desugar expr)
   (type-case RCFAELS expr
     [numS (n) (numV n)]
-    [boolS (v) (bool v)] ;boolV?
+    [boolS (v) (bool v)]
     [idS (s) (id s)]
     [funS (params body) (fun params (desugar body))]
     [appS (fun args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))]
+    [opS (f l)(op f(desugar l))]
     [binopS (f l r) (binop f (desugar l) (desugar r))]
     [withS (bindings body)                   
 	   (app (fun (map (lambda (bind)
 			    (bind-name bind)) bindings) 
 		     (desugar body))                             
 		(map (lambda (bind)            
-	       (desugar (bind-val bind))) bindings))]                                   
+	       (desugar (bind-val bind))) bindings))]
+    [with*S (bindings body)
+             (error "not implemented yet")]
     [if0S (i j k) 
            (if0 (desugar i)
                 (desugar j)
                 (desugar k))]
     [recS (id expr body) (rec id (desugar expr) (desugar body))]
-    [lstS (i )
-         (error "not implemented yet")]))
+    [equal?S (id1 id2) (isequal? (desugar id1)(desugar id2))]
+    [lstS (i j) (Mlist (desugar i)(desugar j))]))
 
 (define (matryoshka bindings body)
   (cond
@@ -37,9 +40,9 @@
 ;Interp
 (define (interp expr env)
   (type-case RCFAEL expr
-    [num (n) (numV n)]
-    [bool (v) (bool v)] ;boolV?
     [id (v) (lookup v env)]
+    [num (n) (numV n)]
+    [bool (v) (boolV v)]
     [binop (f l r) (numf f (interp l env) (interp r env))]
     [fun (fun-id fun-body)
          (closureV fun-id fun-body env)]
@@ -50,9 +53,10 @@
                             (map (lambda (arg) (interp arg env)) fun-body)
                             (closureV-env fun-val))))]
     [if0 (con then else)
-         (if (bool (interp con env)) ;num-zero? 
+         (if (bool (interp con env))
              (interp then env)
-             (interp else env))]  
+             (interp else env))]
+    [isequal? (id1 id2)(error "not implemented yet")]
     [rec (id expr body)
       (interp body
               (cyclically-bind-and-interp id
@@ -62,8 +66,9 @@
            (interp bound-body
                    (aSub bound-id
                          (interp named-expr env) env))] ;page 113 from Shriram's book
-    [Mlist (i)
-         (error "not implemented yet")]  ))
+    [Mlist (i j)
+         (error "not implemented yet")]
+    [op (f l)(error "not implemented yet")]))
 
 ;;Cyclically-bind-and-interp : symbol RCFAEL env -> env
 (define (cyclically-bind-and-interp bound-id named-expr env)
