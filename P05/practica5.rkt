@@ -10,20 +10,22 @@
     [numS (n) (numV n)]
     [boolS (v) (bool v)] ;boolV?
     [idS (s) (id s)]
+    [funS (params body) (fun params (desugar body))]
+    [appS (fun args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))]
     [binopS (f l r) (binop f (desugar l) (desugar r))]
     [withS (bindings body)                   
 	   (app (fun (map (lambda (bind)
 			    (bind-name bind)) bindings) 
 		     (desugar body))                             
 		(map (lambda (bind)            
-		       (desugar (bind-val bind))) bindings))]                               
-    [funS (params body) (fun params (desugar body))]                                 
-    [appS (fun args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))]
+	       (desugar (bind-val bind))) bindings))]                                   
     [if0S (i j k) 
-           (error "not implemented yet")]
+           (if0 (desugar i)
+                (desugar j)
+                (desugar k))]
+    [recS (id expr body) (rec id (desugar expr) (desugar body))]
     [lstS (i )
-         (error "not implemented yet")]
-    [recS (id expr body) (error "no implemented yet")] ))
+         (error "not implemented yet")]))
 
 (define (matryoshka bindings body)
   (cond

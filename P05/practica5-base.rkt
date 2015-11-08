@@ -24,6 +24,10 @@
        (then RCFAELS?)
        (else RCFAELS?)]
   [recS (id RCFAELS?) (expr RCFAELS?) (body RCFAELS?)]
+  [equal?S (id1 RCFAELS?)
+           (id1 RCFAELS?)]
+  [opS (f procedure?)
+      (args RCFAELS?)]
   [lstS (error "not implemented yet")] )
 
 
@@ -40,12 +44,15 @@
   [if0 (cond RCFAEL?)
         (then RCFAEL?)
         (else RCFAEL?)]
-  ;[equal? (id1 id2)]
+  [equal? (id1 RCFAEL?)
+          (id2 RCFAEL?)]
   [app (fun RCFAEL?)
        (args (listof RCFAEL?))]
   [binop (f procedure?)
          (l RCFAEL?)
-         (r RCFAEL?)])
+         (r RCFAEL?)]
+  [op (f procedure?)
+      (args RCFAEL?)])
 
 
 ;Type-Value
@@ -98,6 +105,20 @@
     [(and) (lambda (x y) (and x y))]
     [(or) (lambda (x y) (or x y))] ))
 
+(define (eligeUn s)
+  (case s
+    [(inc) add1]
+    [(dec) sub1]
+    [(zero?) zero?]
+    [(num?) num?]
+    [(neg) not]
+    [(bool?) boolean?]
+    [(first) first]
+    [(rest) rest]
+    [(empty?) empty?]
+    [(list?) list?]))
+
+
 (define-type MList
   [MEmpty]
   [MCons (e RCFAEL?) (lst MList?)])
@@ -111,7 +132,6 @@
   (cond
    [(empty? l) #f]
    [(member? (car l) (cdr l) comp) (car l)]
-   
    [else (buscaRepetido (cdr l) comp)]))
 
 ;; member?: X listof(Y) (X Y -> boolean) -> boolean
