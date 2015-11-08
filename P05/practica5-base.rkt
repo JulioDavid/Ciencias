@@ -20,8 +20,7 @@
   [binopS (f procedure?)
          (l RCFAELS?)
          (r RCFAELS?)]
-  [withS (bindings 
-         (listof bind?))(body RCFAELS?)]
+  [withS (bindings (listof bind?))(body RCFAELS?)]
   [with*S (bindings 
          (listof bind?))(body RCFAELS?)]
   [if0S (cond RCFAELS?)
@@ -39,7 +38,7 @@
   [id (name symbol?)]
   [num (n number?)]
   [bool (v boolean?)]
-  [Mlist (e RCFAEL?) (lst RCFAEL?)];Maybe MList? Maybe not MList ;(error "not implemented yet")]
+  [Mlist (l MList?)];Maybe MList? Maybe not MList ;(error "not implemented yet")]
   [with (name symbol?) (named-expr RCFAEL?) (body RCFAEL?)] ;(bindings (listof bind?))(body RCFAEL?)]
   [rec (id RCFAEL?) (expr RCFAEL?) (body RCFAEL?)]
   [fun (params (listof symbol?))
@@ -149,15 +148,15 @@
    [else (member? x (cdr l) comparador)]))
 
 ;; A::= <number>|<symbol>|listof(<A>)
-;; parse: A -> FAES
+;; parse: A -> RCFAELS
 (define (parse sexp)
   (cond
-   [(symbol? sexp) (id sexp)]
-   [(number? sexp) (num sexp)]
+   [(symbol? sexp) (idS sexp)]
+   [(number? sexp) (numS sexp)]
    [(boolean? sexp) (boolS sexp)]
    [(list? sexp)
     (case (car sexp)
-      [(with) (with (parse-bindings (cadr sexp) #f) (parse (caddr sexp)))]
+      [(with) (withS (parse-bindings (cadr sexp) #f) (parse (caddr sexp)))]
       [(with*) (with*S (parse-bindings (cadr sexp) #t) (parse (caddr sexp)))]
       [(fun) (funS (cadr sexp) (parse (caddr sexp)))]
       [(+ - / * < > <= >= and or) (binopS (elige (car sexp)) (parse (cadr sexp)) (parse (caddr sexp)))]

@@ -7,7 +7,7 @@
 ;desugar
 (define (desugar expr)
   (type-case RCFAELS expr
-    [numS (n) (numV n)]
+    [numS (n) (num n)]
     [boolS (v) (bool v)]
     [idS (s) (id s)]
     [funS (params body) (fun params (desugar body))]
@@ -21,7 +21,7 @@
 		(map (lambda (bind)            
 	       (desugar (bind-val bind))) bindings))]
     [with*S (bindings body)
-             (error "not implemented yet")]
+             (matryoshka bindings body)]
     [if0S (i j k) 
            (if0 (desugar i)
                 (desugar j)
@@ -66,7 +66,7 @@
            (interp bound-body
                    (aSub bound-id
                          (interp named-expr env) env))] ;page 113 from Shriram's book
-    [Mlist (i j)
+    [Mlist (i)
          (error "not implemented yet")]
     [op (f l)(error "not implemented yet")]))
 
@@ -100,3 +100,6 @@
 
 (define (cparse sexp)
   (desugar (parse sexp)))
+
+
+
