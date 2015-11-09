@@ -8,6 +8,7 @@
 
 ;RCFAELS type definition, for desugar
 (define-type RCFAELS
+  [MEmptyS]
   [numS (n number?)]
   [boolS (v boolean?)]
   [idS (name symbol?)]
@@ -35,6 +36,7 @@
 
 ;RCFAEL type definition
 (define-type RCFAEL
+  [MEmpty]
   [id (name symbol?)]
   [num (n number?)]
   [bool (v boolean?)]
@@ -67,9 +69,9 @@
   [MEmptyV]
   [MConsV (e RCFAEL-Value?) (lst RCFAEL-Value?)])
 
-(define-type MList
-  [MEmpty]
-  [MCons (e RCFAEL-Value?) (lst MList?)])
+;;(define-type MList
+  ;;[MEmpty]
+  ;;[MCons (e RCFAEL-Value?) (lst MList?)])
 
 ;Enviroment definition
 (define-type Env
