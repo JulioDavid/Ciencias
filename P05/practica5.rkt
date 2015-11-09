@@ -40,9 +40,9 @@
 ;Interp
 (define (interp expr env)
   (type-case RCFAEL expr
-    [num (n) (numV n)]
-    [id (v) (lookup v env)]
     [bool (v) (boolV v)]
+    [id (v) (lookup v env)]
+    [num (n) (numV n)]
     [op (f l)(opUna f(interp l env))]
     [binop (f l r) (opBina f (interp l env) (interp r env))]
     [fun (fun-id fun-body)
@@ -57,7 +57,7 @@
          (if (bool (interp con env))
              (interp then env)
              (interp else env))]
-    [isequal? (id1 id2)(error "not implemented yet")]
+    [isequal? (id1 id2)(eq (interp id1 env)(interp id2 env))]
     [rec (id expr body)
       (interp body
               (cyclically-bind-and-interp id
@@ -102,8 +102,8 @@
    (cond
       [(and (numV? p1) (numV? p1)) (let ((res (f (numV-n p1) (numV-n p2))))
                                      (if (number? res) (numV res) (boolV res)))]
-      [(and (boolV? p1) (boolV? p2)) (boolV (equal? (boolV-b p1) (boolV-b p2)))]
-      [else (error "La aplicación de equal? no es adecuada")]))
+      [(and (boolV? p1) (boolV? p2))(let ((res (f (boolV-b p1) (boolV-b p2))))
+                                     (if (boolean? res) (boolV res)(error "No op")))]))
 
 
 ;;operacion unaria=- recibe parametro y operacion a realizar
@@ -115,6 +115,13 @@
    [(boolV? p1) (let ((res (f (boolV-b p1))))
                    (if (number? res) (numV res)
                        (boolV res)))]))
+
+(define (eq id1 id2)
+  (cond
+    [(and (numV? id1) (numV id2))(boolV (= id1 id2))]
+    [(and (boolV? id1)(boolV? id2)) (boolV (equal? id1 id2))]
+    [(and (list? id1) (list? id2))(boolV (= (length id1) (length id2)))]
+    [else "La aplicación de equal? no es adecuada"]))
 
 (define (rinterp expr)
   (interp expr (mtSub)))
