@@ -40,16 +40,17 @@
 ;Interp
 (define (interp expr env)
   (type-case RCFAEL expr
+    [bool (v) (boolV v)]
     [id (v) (lookup v env)]
     [num (n) (numV n)]
-    [bool (v) (boolV v)]
-    [binop (f l r) (numf f (interp l env) (interp r env))]
+    [op (f l)(opUna f(interp l env))]
+    [binop (f l r) (opBina f (interp l env) (interp r env))]
     [fun (fun-id fun-body)
          (closureV fun-id fun-body env)]
     [app (fun-id fun-body)
          (local([define fun-val(interp fun-id env)])
                (interp (closureV-body fun-val)
-                      (aSub (closureV-param fun-val)
+                      (args (closureV-param fun-val)
                             (map (lambda (arg) (interp arg env)) fun-body)
                             (closureV-env fun-val))))]
     [if0 (con then else)
@@ -66,9 +67,14 @@
            (interp bound-body
                    (aSub bound-id
                          (interp named-expr env) env))] ;page 113 from Shriram's book
-    [Mlist (i)
-         (error "not implemented yet")]
-    [op (f l)(error "not implemented yet")]))
+    [Mlist(e lst) (MConsV (interp e env) (interp lst env))]
+    ))
+
+;;Mete los argumentos al ambiente
+(define (args param ar env)
+  (cond
+    [(empty? param) env]
+    [else (aSub (car param) (car ar) (args (cdr param) (cdr ar) env))]))
 
 ;;Cyclically-bind-and-interp : symbol RCFAEL env -> env
 (define (cyclically-bind-and-interp bound-id named-expr env)
@@ -92,14 +98,28 @@
                  (unbox boxed-bound-value)
                  (lookup name rest-env))] ))
 
+;;operacion binaria- recibe los parametros y la operacion a realizar con ellos
+(define (opBina f p1 p2)
+   (cond
+      [(and (numV? p1) (numV? p1)) (let ((res (f (numV-n p1) (numV-n p2))))
+                                     (if (number? res) (numV res) (boolV res)))]
+      [(and (boolV? p1) (boolV? p2)) (boolV (equal? (boolV-b p1) (boolV-b p2)))]
+      [else (error "La aplicación de equal? no es adecuada")]))
+
+
+;;operacion unaria=- recibe parametro y operacion a realizar
+(define (opUna f p1)
+  (cond
+   [(numV? p1) (let ((res (f (numV-n p1))))
+                   (if (number? res) (numV res)
+                       (boolV res)))]
+   [(boolV? p1) (let ((res (f (boolV-b p1))))
+                   (if (number? res) (numV res)
+                       (boolV res)))]))
+
 (define (rinterp expr)
   (interp expr (mtSub)))
 
-(define (numf f n1 n2)
-  (numV (f (numV-n n1) (numV-n n2))))
-
 (define (cparse sexp)
   (desugar (parse sexp)))
-
-
 
