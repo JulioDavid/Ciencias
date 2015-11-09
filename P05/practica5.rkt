@@ -28,7 +28,7 @@
                 (desugar k))]
     [recS (id expr body) (rec id (desugar expr) (desugar body))]
     [equal?S (id1 id2) (isequal? (desugar id1)(desugar id2))]
-    [lstS (i j) (Mlist (desugar i)(desugar j))]))
+    [MListS (i j) (Mlist (desugar i)(desugar j))]))
 
 (define (matryoshka bindings body)
   (cond
@@ -57,17 +57,17 @@
          (if (bool (interp con env))
              (interp then env)
              (interp else env))]
-    [isequal? (id1 id2)(eq (interp id1 env)(interp id2 env))]
+    [isequal? (id1 id2)(eq? (interp id1 env)(interp id2 env))]
     [rec (id expr body)
       (interp body
               (cyclically-bind-and-interp id
                                           expr
                                           env))]
-    [with  (bound-id named-expr bound-body)
-           (interp bound-body
-                   (aSub bound-id
-                         (interp named-expr env) env))] ;page 113 from Shriram's book
-    [Mlist(e lst) (MConsV (interp e env) (interp lst env))] ))
+    [with (bound-id named-expr bound-body)
+          (interp bound-body
+                  (aSub bound-id
+                        (interp named-expr env) env))] ;page 113 from Shriram's book
+    [Mlist (e lst) (MCons (interp e env) (interp lst env))] ))
 
 ;;Mete los argumentos al ambiente
 (define (args param ar env)
@@ -98,12 +98,15 @@
                  (lookup name rest-env))] ))
 
 ;;operacion binaria- recibe los parametros y la operacion a realizar con ellos
+
 (define (opBina f p1 p2)
-   (cond
-      [(and (numV? p1) (numV? p1)) (let ((res (f (numV-n p1) (numV-n p2))))
-                                     (if (number? res) (numV res) (boolV res)))]
-      [(and (boolV? p1) (boolV? p2))(let ((res (f (boolV-b p1) (boolV-b p2))))
-                                     (if (boolean? res) (boolV res)(error "No op")))]))
+  (cond
+    [(and (numV? p1) (numV? p2)) 
+     (let ((res (f (numV-n p1) (numV-n p2)))) 
+       (if (number? res) (numV res) (boolV res)))]
+    [(and (boolV? p1) (boolV? p2))
+     (let ((res (f (boolV-b p1) (boolV-b p2))))
+       (if (boolean? res) (boolV res)(error "No op")))] ))
 
 
 ;;operacion unaria=- recibe parametro y operacion a realizar
@@ -116,9 +119,9 @@
                    (if (number? res) (numV res)
                        (boolV res)))]))
 
-(define (eq id1 id2)
+(define (eq? id1 id2)
   (cond
-    [(and (numV? id1) (numV id2))(boolV (= id1 id2))]
+    [(and (numV? id1) (numV? id2))(boolV (= id1 id2))]
     [(and (boolV? id1)(boolV? id2)) (boolV (equal? id1 id2))]
     [(and (list? id1) (list? id2))(boolV (= (length id1) (length id2)))]
     [else "La aplicación de equal? no es adecuada"]))
@@ -128,6 +131,7 @@
 
 (define (cparse sexp)
   (desugar (parse sexp)))
+
 
 ;Sí son iguales a los de la practica 4. RCFAEL es una versión extendida de FAE.
 ;(test (rinterp (cparse '3)) (numV 3))
@@ -154,4 +158,5 @@
 ;(test (rinterp (cparse '{with* {{x 10} {x 20}} x})) (numV 20))
 
 ;;Pruebas para el resto de RCFAEL
-(test (rinterp (cparse 'true)) (boolV #t))
+;(test (rinterp (cparse '#t)) (boolV #t))
+(test (rinterp (cparse '(isequal? 5 5))) (boolV #t))

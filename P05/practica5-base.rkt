@@ -12,25 +12,25 @@
   [boolS (v boolean?)]
   [idS (name symbol?)]
   [funS (params (listof symbol?))
-       (body RCFAELS?)]
+        (body RCFAELS?)]
   [appS (fun RCFAELS?)
-       (args (listof RCFAELS?))]
+        (args (listof RCFAELS?))]
   [opS (f procedure?)
-      (args RCFAELS?)]
+       (args RCFAELS?)]
   [binopS (f procedure?)
-         (l RCFAELS?)
-         (r RCFAELS?)]
+          (l RCFAELS?)
+          (r RCFAELS?)]
   [withS (bindings (listof bind?))(body RCFAELS?)]
   [with*S (bindings 
-         (listof bind?))(body RCFAELS?)]
+           (listof bind?))(body RCFAELS?)]
   [if0S (cond RCFAELS?)
-       (then RCFAELS?)
-       (else RCFAELS?)]
+        (then RCFAELS?)
+        (else RCFAELS?)]
   [recS (id RCFAELS?) (expr RCFAELS?) (body RCFAELS?)]
   [equal?S (id1 RCFAELS?)
            (id2 RCFAELS?)]
-  [lstS (e RCFAELS?)
-	(lst RCFAELS?)] )
+  [MListS (e RCFAELS?)
+          (lst RCFAELS?)] )
 
 
 ;RCFAEL type definition
@@ -63,9 +63,7 @@
   [closureV (param (listof symbol?))
 	    (body RCFAEL?)
 	    (env Env?)]
-  [boolV (b boolean?)]
-  [MEmptyV]
-  [MConsV (e RCFAEL-Value?) (lst RCFAEL-Value?)])
+  [boolV (b boolean?)] )
 
 (define-type MList
   [MEmpty]
