@@ -1,0 +1,24 @@
+Problema IV
+
+- Ventajas de un Lenguaje de propósito específico:
+   Tener un lenguaje de uso específico, es bastante útil cuando se quieren solucionar problemas específicos
+   y generalmente pequeños.
+   
+- Desventajas de un Lenguaje de propósito específico:
+  Cuando se necesita hacer un programa que requiera múltiples funcionalidades, por ejemplo,
+  un sistema de inventario y cobro para una tienda, en la que se que tiene que llevar cuentas, precios, fechas,
+  y el sistema de cobro, y que requiere hacer muchas otras cosas que son considerablemente diferentes entre si.
+
+
+
+- Ventajas de un Lenguaje de propósito general:
+  Tener un lenguaje de propósito general es muy útil cuando se necesita hacer una solución a un problema más grande,
+  más generalizado, sistemas grandes para administrar... cosas... en una fabrica, es necesario un lenguaje que pueda
+  dominar muchas cosas, es normal que en los lenguajes de propósito específico, se usen en conjunto para solucionar problemas
+  más grandes, el detalle está en que son llamados y administrados por lenguajes de propósito general.
+
+- Desventajas de un lenguaje de propósito general:
+  La desventaja promordial es que al querer hacer algo de un tema muy específico, es muy complicado resolverlo,
+  y para poder crear una solución descente, el programador terminará creando paquetes y bibliotecas específicas,
+  para poder dar solución, que generalmente no es lo más eficiente en tiempo o espacio.
+  
