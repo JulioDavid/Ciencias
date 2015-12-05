@@ -4,10 +4,6 @@ class Vertex(object):
 	elem=''
 	adyacentes=[]
 
-	#def __init__(self,elem,adyacentes):
-	#	self.elem=elem
-	#	self.adyacentes=adyacentes
-
 	def __init__(self,elem):
 		self.elem=elem
 
