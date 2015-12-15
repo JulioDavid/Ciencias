@@ -54,3 +54,14 @@ Problema 3: No lo hicieron.
 Problema 4: No pusieron un programa de ejemplo.
 
 **Calificación: 6.5**
+
+### Tarea 3
+Problema I: Bien.
+Problema II: Muy bien.
+Problema III: No obtienen todos los tipos.
+Problema IV: La parte importante es que el
+verificador de tipos se hace en tiempo de compilación y no de ejecución.
+Problema V: Bien.
+Problema VI: Les falto indicar ventajas y desventajas de los lenguajes de proposito general
+
+**Calificación: 8**
