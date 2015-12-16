@@ -28,6 +28,20 @@ Interp: No esta bien implementado para expresiones with o with*
 
 **Calificación: 5**
 
+### Practica 5
+
+La implementacion de booleanos es deficiente, igual
+que la implementacion de recursion hicieron la version con cajas pero no con procedimientos
+
+**Calificación: 5**
+
+### Practica 6
+
+No hay herencia, ni polimorfismo ni implementaron la detección de ciclos.
+
+**Calificación: 8**
+
+
 ## Tareas
 
 ### Tarea 1
